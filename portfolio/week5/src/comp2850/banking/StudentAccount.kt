@@ -13,12 +13,14 @@ class StudentAccount(holder: String) : BankAccount(holder) {
 
     override fun withdraw(amount: Int) {
         require(amount > 0) { "Withdrawal amount must be greater than 0" }
-        require((balance - amount) >= -overdraft) { "Insufficient funds for withdrawal" }
+        require(balance + overdraft >= amount) { "Insufficient funds for withdrawal" }
         
         balance -= amount
     }
 
-    fun withdrawalsAllowed() = balance > -overdraft
+    fun withdrawalsAllowed(): Boolean {
+        return balance > -overdraft
+    }
 
     override fun toString() = "Account for $holder, balance = $balance (overdraft = $overdraft)"
 }
